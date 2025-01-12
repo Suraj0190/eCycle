@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation | eCycle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+
+        header {
+            background-color: #0077b6;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #005f7a;
+            position: relative;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #cc0000;
+        }
+
+        .confirmation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: #0077b6;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 30px;
+        }
+
+        .order-summary {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .order-summary h2 {
+            color: #0077b6;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .order-summary ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .order-summary li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .order-summary li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>eCycle</h1>
+        <button class="logout-button" id="logoutButton">Logout</button>
+    </header>
+
+    <div class="confirmation-container">
+        <h1>Thank You for Your Purchase!</h1>
+        <p>Thanks for shopping with us, making a change in the environment.</p>
+        <p>Your payment has been made successfully.</p>
+        <p class="order-id">Order ID: <span id="orderId"></span></p>
+        <p>User: <span id="userName"></span></p>
+        <p>Email: <span id="userEmail"></span></p>
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <ul id="orderSummary">
+                <!-- Order items will be inserted here -->
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 eCycle. All rights reserved.
+    </footer>
+
+    <script>
+        function displayOrderSummary(order) {
+            const orderSummaryElement = document.getElementById("orderSummary");
+
+            if (!order || !order.cartItems || order.cartItems.length === 0) {
+                orderSummaryElement.innerHTML = "<li>Your cart is empty.</li>";
+            } else {
+                order.cartItems.forEach(item => {
+                    const listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        <strong>${item.name}</strong><br>
+                        Quantity: ${item.quantity}<br>
+                        Subtotal: $${(item.quantity * item.price).toFixed(2)}
+                    `;
+                    orderSummaryElement.appendChild(listItem);
+                });
+            }
+        }
+
+        function init() {
+            const orderId = localStorage.getItem('orderId');
+            document.getElementById('orderId').textContent = orderId;
+
+            const userName = localStorage.getItem('fullName') || 'Guest';
+            const userEmail = localStorage.getItem('userEmail') || 'Not provided';
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userEmail').textContent = userEmail;
+
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+
+            const order = {
+                cartItems,
+                totalPrice
+            };
+
+            displayOrderSummary(order);
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/users/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (response.ok) {
+                    alert('Logout successful');
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                } else {
+                    const data = await response.json();
+                    alert(`Error logging out: ${data.error}`);
+                }
+            } catch (err) {
+                alert(`Error logging out: ${err.message}`);
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>

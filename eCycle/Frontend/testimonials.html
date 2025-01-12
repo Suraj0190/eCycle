@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Testimonials | eCycle">
+    <title>eCycle | Testimonials</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header .logo img {
+            max-width: 150px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .testimonials {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonials h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .testimonial-card span {
+            display: block;
+            text-align: right;
+            font-style: italic;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .testimonial-form {
+            margin-top: 30px;
+        }
+
+        .testimonial-form input,
+        .testimonial-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .testimonial-form .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .testimonial-form .btn:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #333;
+            color: white;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html"><center><img src="Img2.png" alt="eCycle Logo"></center></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="ecommerce.html"><i class="fas fa-exchange-alt"></i> Buy</a></li>
+                <li><a href="testimonials.html"><i class="fas fa-comment-alt"></i> Testimonials</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="login.html"><i class="fas fa-user"></i> Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="testimonials">
+        <h1>What Our Users Say</h1>
+        <div id="testimonialList">
+            <div class="testimonial-card">
+                <p>"eCycle made it easy for me to recycle my old electronics and ensure they were disposed of responsibly. Thank you for making a difference!"</p>
+                <span>- User 1</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"I love the fact that I can buy refurbished electronics from eCycle. It's great for the environment and my wallet!"</p>
+                <span>- User 2</span>
+            </div>
+        </div>
+        <h2>Add Your Testimonial</h2>
+        <form id="testimonialForm" class="testimonial-form">
+            <input type="text" name="userName" placeholder="Enter your name" required>
+            <textarea name="message" placeholder="Enter your testimonial" required></textarea>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2025 eCycle. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('testimonialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userName = e.target.userName.value;
+            const message = e.target.message.value;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/testimonials', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userName, message }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    const testimonialList = document.getElementById('testimonialList');
+                    const newTestimonial = document.createElement('div');
+                    newTestimonial.className = 'testimonial-card';
+                    newTestimonial.innerHTML = `<p>"${message}"</p><span>- ${userName}</span>`;
+                    testimonialList.appendChild(newTestimonial);
+                    e.target.reset();
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert('Error adding testimonial');
+            }
+        });
+    </script>
+</body>
+</html>

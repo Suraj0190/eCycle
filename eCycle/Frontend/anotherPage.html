@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+</head>
+<body>
+    <!-- ...existing code... -->
+    <script>
+        // Example of an API call to localhost
+        async function fetchData() {
+            try {
+                const res = await fetch('http://localhost:5000/api/data');
+                const data = await res.json();
+                if (res.ok) {
+                    // Process the data
+                    console.log(data);
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert('Error fetching data');
+            }
+        }
+
+        // Call the function to fetch data
+        fetchData();
+    </script>
+</body>
+</html>

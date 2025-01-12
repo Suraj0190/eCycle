@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | LED Bulbs</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            font-size: 24px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .product-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-title {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-description {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .product-specifications {
+            text-align: left;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .product-specifications ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .product-specifications ul li {
+            margin-bottom: 8px;
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .price {
+            font-size: 24px;
+            color: #0077b6;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-controls button {
+            background-color: #0077b6;
+            color: white;
+            padding: 10px 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #005f7a;
+        }
+
+        .quantity-controls input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .buy-button {
+            display: block;
+            background-color: #0077b6;
+            color: white;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #005f7a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        eCycle - Product Details
+    </header>
+
+    <div class="product-container">
+        <div class="product-image">
+            <img src="ledbulb.jpg" alt="LED Bulbs">
+        </div>
+        <h1 class="product-title">Refurbished LED Bulbs</h1>
+        <p class="product-description">
+            Energy-saving refurbished LED bulbs with bright illumination and long lifespan. Ideal for home and office use.
+        </p>
+        <div class="product-specifications">
+            <h3>Specifications:</h3>
+            <ul>
+                <li><strong>Brightness:</strong> 800 lumens (Tested for consistent performance)</li>
+                <li><strong>Power:</strong> 10W (Energy-efficient)</li>
+                <li><strong>Lifespan:</strong> 25,000 hours (Refurbished to ensure longevity)</li>
+                <li><strong>Warranty:</strong> 6 Months (Covers refurbished components)</li>
+                <li><strong>Condition:</strong> Refurbished</li>
+            </ul>
+        </div>
+        <div class="product-info">
+            <div class="price">$50</div>
+            <div class="quantity-controls">
+                <button onclick="decreaseQuantity()">-</button>
+                <input type="text" id="quantity" value="0" readonly>
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+        </div>
+        <a href="checkout.html" class="buy-button">Buy Now</a>
+    </div>
+    <script>
+        let quantity = localStorage.getItem('quantity-ledbulb') ? parseInt(localStorage.getItem('quantity-ledbulb')) : 0;
+        function updateQuantityDisplay() { 
+            document.getElementById('quantity').value = quantity; 
+            localStorage.setItem('quantity-ledbulb', quantity);
+        }
+        function decreaseQuantity() { 
+            if (quantity > 0) { 
+                quantity--; 
+                updateQuantityDisplay(); 
+            } 
+        }
+        function increaseQuantity() { 
+            quantity++; 
+            updateQuantityDisplay(); 
+        }
+        updateQuantityDisplay();
+    </script>
+</body>
+</html>
