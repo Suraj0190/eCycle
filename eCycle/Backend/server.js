@@ -17,9 +17,7 @@ app.use(bodyParser.json());
 // Serve static files from the frontend directory
 app.use(express.static(path.join(__dirname, '../Frontend')));
 
-mongoose.connect('mongodb://localhost:27017/eCycle', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+mongoose.connect('mongodb://127.0.0.1:27017/eCycle', {
     serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
 }).then(() => {
     console.log('Connected to MongoDB');
